@@ -1,0 +1,10 @@
+name: system_monitor
+version: 1.00
+title: System Monitor
+desc: Server and ResourceSpace statistics - CPU, memory, PHP-FPM / nginx / database processes, disk and network with live and history charts; active users, downloads, uploads, resources by type, offline jobs; configuration check with setup instructions
+author: Jacek Kowalczyk
+config_url: /plugins/system_monitor/pages/setup.php
+default_priority: 900
+disable_group_select: 1
+icon: fa fa-chart-line
+category: System
