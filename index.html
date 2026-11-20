@@ -12,10 +12,10 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://s29829.github.io/system_monitor/">
 <meta property="og:site_name" content="ResourceSpace plugins">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "System Monitor", "alternateName": "System Monitor plugin for ResourceSpace", "description": "System Monitor shows on one page how the server and ResourceSpace are doing: CPU, memory, PHP-FPM, nginx and database processes, disk and network, together with active users, downloads, uploads and resources. A configuration check tells you which metrics are missing on your server and how to switch them on.", "url": "https://s29829.github.io/system_monitor/", "applicationCategory": "BusinessApplication", "applicationSubCategory": "ResourceSpace plugin", "operatingSystem": "Linux, Windows (ResourceSpace 11, PHP 8)", "featureList": ["Live view", "Processes", "Server history", "ResourceSpace statistics", "Resources and jobs", "Configuration check", "Light"], "downloadUrl": "https://github.com/s29829/system_monitor/releases/download/v1.00/system_monitor-1.00.zip", "softwareRequirements": "ResourceSpace 11, Linux server for the server metrics (Ubuntu / Debian with nginx and PHP-FPM recommended), PHP curl extension for the status pages", "isAccessibleForFree": true, "license": "https://polyformproject.org/licenses/noncommercial/1.0.0/", "codeRepository": "https://github.com/s29829/system_monitor", "author": {"@type": "Person", "name": "Jacek Kowalczyk"}, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "softwareVersion": "1.00", "datePublished": "2026-11-19"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "System Monitor", "alternateName": "System Monitor plugin for ResourceSpace", "description": "System Monitor shows on one page how the server and ResourceSpace are doing: CPU, memory, PHP-FPM, nginx and database processes, disk and network, together with active users, downloads, uploads and resources. A configuration check tells you which metrics are missing on your server and how to switch them on.", "url": "https://s29829.github.io/system_monitor/", "applicationCategory": "BusinessApplication", "applicationSubCategory": "ResourceSpace plugin", "operatingSystem": "Linux, Windows (ResourceSpace 11, PHP 8)", "featureList": ["Live view", "Processes", "Server history", "ResourceSpace statistics", "Resources and jobs", "Widgets on every page", "Configuration check", "Light"], "downloadUrl": "https://github.com/s29829/system_monitor/releases/download/v1.01/system_monitor-1.01.zip", "softwareRequirements": "ResourceSpace 11, Linux server for the server metrics (Ubuntu / Debian with nginx and PHP-FPM recommended), PHP curl extension for the status pages", "isAccessibleForFree": true, "license": "https://polyformproject.org/licenses/noncommercial/1.0.0/", "codeRepository": "https://github.com/s29829/system_monitor", "author": {"@type": "Person", "name": "Jacek Kowalczyk"}, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "softwareVersion": "1.01", "datePublished": "2026-11-20"}</script>
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="assets/style.css?v=202611191959">
+<link rel="stylesheet" href="assets/style.css?v=202611201825">
 </head>
 <body style="--accent: #0d9488">
 <a class="skip" href="#main">Skip to content</a>
@@ -44,11 +44,11 @@
   </div>
   <aside class="download-card" aria-label="Download">
     <div class="label">Latest release</div>
-    <div class="version">v<span data-repo="s29829/system_monitor" data-field="version">1.00</span></div>
-    <div class="meta" data-repo="s29829/system_monitor" data-field="meta">Released 19 Nov 2026</div>
-    <a class="btn btn-primary" href="https://github.com/s29829/system_monitor/releases/download/v1.00/system_monitor-1.00.zip" data-repo="s29829/system_monitor" data-field="url"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></svg> Download .zip</a>
+    <div class="version">v<span data-repo="s29829/system_monitor" data-field="version">1.01</span></div>
+    <div class="meta" data-repo="s29829/system_monitor" data-field="meta">Released 20 Nov 2026</div>
+    <a class="btn btn-primary" href="https://github.com/s29829/system_monitor/releases/download/v1.01/system_monitor-1.01.zip" data-repo="s29829/system_monitor" data-field="url"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></svg> Download .zip</a>
     <div class="links">
-      <a href="https://github.com/s29829/system_monitor/releases/tag/v1.00" data-repo="s29829/system_monitor" data-field="notes">Release notes</a>
+      <a href="https://github.com/s29829/system_monitor/releases/tag/v1.01" data-repo="s29829/system_monitor" data-field="notes">Release notes</a>
       <a href="https://github.com/s29829/system_monitor">Source on GitHub</a>
       <a href="https://github.com/s29829/system_monitor/releases">All releases</a>
     </div>
@@ -64,6 +64,7 @@
       <div class="card feature"><h3>Server history</h3><p>Minute samples and hourly history from 6 hours to 1 year, average and maximum on every chart.</p></div>
       <div class="card feature"><h3>ResourceSpace statistics</h3><p>Unique users, downloads, uploads, views, searches and logins per hour, day and month - including the time before the plugin was installed.</p></div>
       <div class="card feature"><h3>Resources and jobs</h3><p>Resources by type and workflow state, files without previews, offline job queue with failed jobs, database size and top lists.</p></div>
+      <div class="card feature"><h3>Widgets on every page</h3><p>A side panel for chosen people and a compact header bar before the Upload button for whole user groups - Basic, Standard or Full set per group, numbers or small charts, a drop-down with more values.</p></div>
       <div class="card feature"><h3>Configuration check</h3><p>PHP-FPM status, nginx stub_status, /proc and hidepid, database, OPcache and the cron collector - with ready-to-use configuration snippets.</p></div>
       <div class="card feature"><h3>Light</h3><p>No cron needed: at most one sample per interval, taken after a page was sent. Reads /proc and status pages only - no shell commands.</p></div>
   </div>
@@ -86,10 +87,10 @@
       <h3>On the server (command line)</h3>
       <div class="code-wrap"><pre class="code"><code><span class="c"># download and unpack – &lt;RS_ROOT&gt; is your ResourceSpace folder</span>
 cd /tmp
-curl -fLO https://github.com/s29829/system_monitor/releases/download/v<span data-repo="s29829/system_monitor" data-field="version">1.00</span>/system_monitor-<span data-repo="s29829/system_monitor" data-field="version">1.00</span>.zip
+curl -fLO https://github.com/s29829/system_monitor/releases/download/v<span data-repo="s29829/system_monitor" data-field="version">1.01</span>/system_monitor-<span data-repo="s29829/system_monitor" data-field="version">1.01</span>.zip
 <span class="c"># only when updating – the plugin data stays in the filestore</span>
 sudo rm -rf &lt;RS_ROOT&gt;/plugins/system_monitor
-sudo unzip -q system_monitor-<span data-repo="s29829/system_monitor" data-field="version">1.00</span>.zip -d &lt;RS_ROOT&gt;/plugins/
+sudo unzip -q system_monitor-<span data-repo="s29829/system_monitor" data-field="version">1.01</span>.zip -d &lt;RS_ROOT&gt;/plugins/
 sudo chown -R www-data:www-data &lt;RS_ROOT&gt;/plugins/system_monitor</code></pre></div>
       <p class="hint"><code>www-data</code> is the user that runs PHP (Apache on the RHEL family: <code>apache</code>). Then activate the plugin in System &gt; Plugins. With git: <code>git clone https://github.com/s29829/system_monitor &lt;RS_ROOT&gt;/plugins/system_monitor</code></p>
     </div>
@@ -121,9 +122,9 @@ sudo chown -R www-data:www-data &lt;RS_ROOT&gt;/plugins/system_monitor</code></p
   <div class="wrap">
     <p><strong>License:</strong> PolyForm Noncommercial 1.0.0 – free for private and noncommercial use. Commercial use requires the author&#x27;s written permission (see LICENSE-COMMERCIAL.md in each plugin).</p>
     <p>Independent plugins by Jacek Kowalczyk. Not affiliated with or endorsed by the ResourceSpace project or Montala Ltd. ResourceSpace is open source software licensed under the BSD licence.</p>
-    <p class="muted">Site generated 2026-11-19. Download buttons always point to the latest release on GitHub.</p>
+    <p class="muted">Site generated 2026-11-20. Download buttons always point to the latest release on GitHub.</p>
   </div>
 </footer>
-<script src="assets/site.js?v=202611191959" defer></script>
+<script src="assets/site.js?v=202611201825" defer></script>
 </body>
 </html>
