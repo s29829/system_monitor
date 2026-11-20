@@ -2,14 +2,16 @@
 
 **English** | [Polski](README.pl.md)
 
-Documentation for plugin version **1.00** (ResourceSpace 11).
+Documentation for plugin version **1.01** (ResourceSpace 11).
 *(since X.YY)* marks the plugin version in which a feature first appeared. Features without
 a mark have been available since 1.00. Change history: [CHANGELOG.md](CHANGELOG.md).
 
 The plugin shows the current state and the history of the server and of ResourceSpace on one page:
 CPU, memory, PHP-FPM / nginx / database processes, disk and network with live and history charts,
 plus active users, downloads, uploads, resources by type and offline jobs. A configuration check
-tells you which metrics are missing on your server and how to switch them on.
+tells you which metrics are missing on your server and how to switch them on. Two widgets *(since 1.01)*
+show the most important values on every page: a side panel for chosen people and a header bar for
+whole user groups.
 
 **Where:** System > Plugins > System Monitor > **Options**. Only administrators (permission `a`)
 can open this page.
@@ -95,6 +97,56 @@ ImageMagick / ffmpeg / Ghostscript, uptime), the collected history and **Take a 
 
 A banner at the top of the page shows how many items need attention.
 
+### Widgets *(since 1.01)*
+
+Two widgets on every page of ResourceSpace. Both are off until you choose who sees them.
+
+**Side panel** – a floating box at the right (or left) edge of the screen, over the normal page.
+A small handle with a status colour opens it; the user's last choice (open / closed) is remembered in
+the browser.
+
+| Setting | Default | Meaning |
+|---|---|---|
+| Who sees it | – | User groups and / or single users (one user name per line; unknown names are listed). |
+| Content | *Server load* | Any values from the list below. Presets: **Server load** (status, CPU, memory, load, PHP-FPM, requests, database, disk), **Users and activity** (status, users online, active users, downloads and uploads today, offline jobs, requests, CPU), **Everything**. |
+| Side | right | right or left |
+| Open on the first visit | off | |
+| Refresh | 10 s | 5–120 s while the panel is open. Closed: only the status colour of the handle, every minute (or with the header bar). |
+
+Each row shows the value, a detail line and a chart of the last 30 minutes.
+
+**Header bar** – in the top menu, right before the Upload button: by default the current **CPU and memory
+use in per cent** (up to 4 values can be set; numbers, numbers with small charts of the last 30 minutes,
+or numbers with load bars). A click opens a drop-down with the other values and, for administrators,
+a link to this page. Each user group gets one of three sets, or none:
+
+| Set | In the bar | In the drop-down | Display |
+|---|---|---|---|
+| **Basic** | CPU %, memory % | status, users online, downloads / uploads today, offline jobs | numbers |
+| **Standard** | CPU %, memory % | status, load, requests, users online, active users, downloads / uploads today, jobs, disk | numbers + load bars |
+| **Full** | CPU %, memory % | all other values | numbers + small charts |
+
+The content and display of each set can be changed (*Default bar* / *Default drop-down* restore it).
+Settings saved with an earlier build of 1.01 are converted once: CPU and memory go to the bar of every
+set, the drop-down keeps the other values (display style and groups stay). Refresh: 30 s (10–300 s); while the drop-down is
+open every 10 s at most. On narrow screens the bar shows only the values (below 900 px) or only the
+status colours (below 600 px).
+
+**Values:** system status (OK / busy / overloaded – the worst of CPU, memory, load, swap, disk and the
+PHP-FPM queue), CPU, memory, load average, swap, filestore disk, PHP-FPM workers, requests per second,
+web connections, database, network, disk I/O, media processing, users online (5 min), active users,
+offline jobs, downloads today, uploads today. Colours: green = OK, orange = busy, red = overloaded.
+Limits: CPU 75 / 90 %, memory 85 / 95 %, load 1 / 2 per core, swap 50 / 80 %, disk 85 / 95 %, PHP-FPM
+queue 1 / 10, offline jobs 50 / 500 waiting or 1 / 10 failed, running database threads 20 / 50.
+
+**Load:** all viewers share one set of values, computed at most every 5 seconds (`widget.json`), so
+more viewers add only small requests, not more measuring. Refreshing stops while the browser tab is
+hidden and after *N* minutes without mouse or keyboard (setting, default 10; 0 = never). Every refresh
+is a request to ResourceSpace and counts as activity of the user, like ResourceSpace's own message check.
+
+The widgets appear from the next full page load after saving. They are not shown on the login page, to
+the anonymous user or on external shares.
+
 ### Settings
 
 | Setting | Default | Meaning |
@@ -174,10 +226,13 @@ allow the web server user to see them (group `proc`, `gid=proc`).
 ## Data and privacy
 
 - Everything is stored in `<filestore>/system_monitor/data_<key>/` (not readable by URL):
-  `settings.json`, `state.json`, `minute/YYYY-MM-DD.jsonl`, `hour/YYYY-MM.jsonl`, `cache/`.
+  `settings.json`, `state.json`, `minute/YYYY-MM-DD.jsonl`, `hour/YYYY-MM.jsonl`, `cache/`,
+  `widget.json` / `widget_state.json` *(since 1.01)*.
 - The plugin only reads: `/proc`, `/etc/php/<version>/fpm/pool.d/*.conf`, the configured local status
   pages and the database (SELECT / SHOW). No `exec()` or shell commands.
 - Only administrators can see the page and its data (`pages/data.php`).
+- Widgets *(since 1.01)*: `pages/widget.php` returns only the values of the panel / set of the logged-in
+  user, nothing to other users (HTTP 403).
 - **Reset plugin** (type `RESET`) deletes `<filestore>/system_monitor`. ResourceSpace data is not changed.
 
 ## Load and performance
@@ -186,6 +241,8 @@ allow the web server user to see them (group `proc`, `gid=proc`).
   the page was sent: reading `/proc` (all processes), two small database queries and the status pages.
 - The live view reads the same data every few seconds only while an administrator has the tab open.
 - The ResourceSpace statistics are cached.
+- Widgets *(since 1.01)*: one request per viewer and refresh; the values are measured at most every
+  5 seconds for all viewers together (see *Widgets*).
 
 ## Planned (next versions)
 
@@ -194,6 +251,7 @@ allow the web server user to see them (group `proc`, `gid=proc`).
 - Event markers on the charts (load test, ResourceSpace update) – added by hand or by the load test tool
 - CSV / JSON export of every chart
 - Dash tile for the ResourceSpace home page (CPU, memory, active users)
+- Widgets: thresholds of the colours (OK / busy / overloaded) set on the options page; the user can pick a panel preset
 
 **Stage 3**
 - Per-request timing (slowest pages) from the nginx access log or PHP-FPM slow log
@@ -206,6 +264,10 @@ allow the web server user to see them (group `proc`, `gid=proc`).
 The plugin was written against the ResourceSpace 10.7 sources: tables `daily_stat`, `resource_log`,
 `activity_log`, `job_queue`, `user.last_active`, hook `initialise`. Check on ResourceSpace 11 (F12 /
 System check) that the ResourceSpace tab shows data.
+Header bar *(since 1.01)*: on ResourceSpace 11 it is placed in `#header-container .actions` right before
+`a.UploadButton` (at the end when there is no Upload button) and takes the size and colours of the header
+icon buttons; on ResourceSpace 10 in `#HeaderNav1 > ul` before `li.UploadButton`. When neither is found, the
+bar is not shown (message in the browser console) – the side panel still works.
 
 ## Installation
 

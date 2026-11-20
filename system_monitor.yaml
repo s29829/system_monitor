@@ -1,5 +1,5 @@
 name: system_monitor
-version: 1.00
+version: 1.01
 title: System Monitor
 desc: Server and ResourceSpace statistics - CPU, memory, PHP-FPM / nginx / database processes, disk and network with live and history charts; active users, downloads, uploads, resources by type, offline jobs; configuration check with setup instructions
 author: Jacek Kowalczyk

@@ -6,8 +6,11 @@
 //   <filestore>/system_monitor/data_<key>/minute/YYYY-MM-DD.jsonl one sample per line (about once a minute)
 //   <filestore>/system_monitor/data_<key>/hour/YYYY-MM.jsonl      hourly aggregates (average + maximum)
 //   <filestore>/system_monitor/data_<key>/cache/<name>.json       short-lived cache of heavier statistics
+//   <filestore>/system_monitor/data_<key>/widget.json             shared values of the side panel / header bar
 
 const SYSTEM_MONITOR_INTERVALS = array(30, 60, 120, 300);   // allowed sample intervals (seconds)
+
+require_once __DIR__ . '/widgets.php'; // side panel and header bar on every page
 
 // <filestore> ($storagedir, default <RS_ROOT>/filestore)
 function system_monitor_storage_dir()
@@ -108,7 +111,7 @@ function system_monitor_defaults()
         'fpm_status_url'      => '',      // e.g. http://127.0.0.1:8099/fpm-status (needed by the cron collector)
         'nginx_status_url'    => '',      // e.g. http://127.0.0.1:8099/nginx_status
         'live_seconds'        => 3,       // refresh of the live view (2-30)
-    );
+    ) + system_monitor_widget_defaults(); // side panel and header bar (include/widgets.php)
 }
 
 function system_monitor_settings()
@@ -125,7 +128,7 @@ function system_monitor_settings()
             $out[$k] = $stored[$k];
         }
     }
-    return $cache = $out;
+    return $cache = system_monitor_widget_clean(system_monitor_widget_migrate($stored, $out));
 }
 
 function system_monitor_save_settings(array $new)
@@ -146,6 +149,7 @@ function system_monitor_save_settings(array $new)
     foreach (array('fpm_status_url', 'nginx_status_url') as $k) {
         $clean[$k] = system_monitor_valid_status_url($clean[$k]) ? $clean[$k] : '';
     }
+    $clean = system_monitor_widget_clean($clean);
     return system_monitor_write_json(system_monitor_data_dir() . '/settings.json', $clean);
 }
 
@@ -240,6 +244,7 @@ function system_monitor_roadmap()
             'Event markers on the charts (load test, ResourceSpace update) - added by hand or by the load test tool',
             'CSV / JSON export of every chart',
             'Dash tile for the ResourceSpace home page (CPU, memory, active users)',
+            'Widgets: thresholds of the colours (OK / busy / overloaded) set on the options page; the user can pick a panel preset',
         ),
         'Stage 3' => array(
             'Per-request timing (slowest pages) from the nginx access log or PHP-FPM slow log',

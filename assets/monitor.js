@@ -515,6 +515,30 @@
         if (clear) {
             clear.addEventListener('submit', function (e) { if (!confirm('Delete the collected history?')) { e.preventDefault(); } });
         }
+        // Widgets tab: preset / default buttons tick the listed checkboxes; at most 4 values in the header bar
+        page.addEventListener('click', function (e) {
+            var b = e.target.closest('button[data-sm-fill]');
+            if (!b) { return; }
+            e.preventDefault();
+            var keys = [];
+            try { keys = JSON.parse(b.getAttribute('data-keys')) || []; } catch (err) { keys = []; }
+            page.querySelectorAll('input[type=checkbox][name="' + b.getAttribute('data-sm-fill') + '"]').forEach(function (c) {
+                c.checked = keys.indexOf(c.value) !== -1;
+            });
+            if (b.hasAttribute('data-style')) {
+                var sel = page.querySelector('select[name="' + b.getAttribute('data-style-name') + '"]');
+                if (sel) { sel.value = b.getAttribute('data-style'); }
+            }
+        });
+        page.addEventListener('change', function (e) {
+            var c = e.target;
+            if (!c.matches || !c.matches('input[type=checkbox][data-sm-max]') || !c.checked) { return; }
+            var max = parseInt(c.getAttribute('data-sm-max'), 10);
+            if (page.querySelectorAll('input[type=checkbox][name="' + c.name + '"]:checked').length > max) {
+                c.checked = false;
+                alert('At most ' + max + ' values fit in the header bar. Put the others in the drop-down.');
+            }
+        });
         // auto-refresh of the history every 5 minutes while it is open
         var histTimer = setInterval(function () {
             if (!document.body.contains(page)) { clearInterval(histTimer); return; }

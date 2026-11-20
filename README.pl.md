@@ -2,14 +2,16 @@
 
 [English](README.md) | **Polski**
 
-Dokumentacja dla wersji wtyczki **1.00** (ResourceSpace 11).
+Dokumentacja dla wersji wtyczki **1.01** (ResourceSpace 11).
 *(od X.YY)* oznacza wersję wtyczki, w której funkcja pojawiła się po raz pierwszy. Funkcje bez
 oznaczenia są dostępne od 1.00. Historia zmian: [CHANGELOG.md](CHANGELOG.md).
 
 Wtyczka pokazuje na jednej stronie bieżący stan i historię serwera oraz ResourceSpace: procesor,
 pamięć, procesy PHP-FPM / nginx / bazy danych, dysk i sieć (wykresy na żywo i historyczne), a także
 aktywnych użytkowników, pobrania, uploady, zasoby według typu i zadania offline. Kontrola
-konfiguracji pokazuje, których danych brakuje na serwerze i jak je włączyć.
+konfiguracji pokazuje, których danych brakuje na serwerze i jak je włączyć. Dwa widżety *(od 1.01)*
+pokazują najważniejsze wartości na każdej stronie: panel boczny dla wybranych osób i wskaźnik
+w nagłówku dla całych grup użytkowników.
 
 **Gdzie:** System > Plugins > System Monitor > **Options**. Stronę mogą otworzyć tylko
 administratorzy (uprawnienie `a`).
@@ -95,6 +97,58 @@ ImageMagick / ffmpeg / Ghostscript, uptime), zebrana historia i przycisk **Take 
 
 Baner na górze strony pokazuje, ile pozycji wymaga uwagi.
 
+### Widgets *(od 1.01)*
+
+Dwa widżety na każdej stronie ResourceSpace. Oba są wyłączone, dopóki nie wybierzesz, kto je widzi.
+
+**Panel boczny** – pływające okienko przy prawej (lub lewej) krawędzi ekranu, nad zwykłą stroną.
+Otwiera je mały uchwyt z kolorem stanu; ostatni wybór użytkownika (otwarty / zamknięty) zapamiętuje
+przeglądarka.
+
+| Ustawienie | Domyślnie | Znaczenie |
+|---|---|---|
+| Kto widzi | – | Grupy użytkowników i / lub pojedynczy użytkownicy (nazwa użytkownika w wierszu; nieznane nazwy są wypisywane). |
+| Zawartość | *Server load* | Dowolne wartości z listy niżej. Gotowe ustawienia: **Server load** (stan, CPU, pamięć, load, PHP-FPM, żądania, baza, dysk), **Users and activity** (stan, użytkownicy online, aktywni, pobrania i uploady dziś, zadania offline, żądania, CPU), **Everything**. |
+| Strona | prawa | prawa albo lewa |
+| Otwarty przy pierwszej wizycie | wył. | |
+| Odświeżanie | 10 s | 5–120 s, gdy panel jest otwarty. Zamknięty: tylko kolor stanu na uchwycie, co minutę (albo razem ze wskaźnikiem w nagłówku). |
+
+Każdy wiersz pokazuje wartość, linię szczegółów i wykres ostatnich 30 minut.
+
+**Wskaźnik w nagłówku** – w górnym menu tuż przed przyciskiem Upload: domyślnie bieżące **zajęcie
+procesora i pamięci w procentach** (można ustawić do 4 wartości; liczby, liczby z małymi wykresami
+ostatnich 30 minut albo liczby z paskami obciążenia). Kliknięcie rozwija menu z pozostałymi wartościami,
+a administratorom także z linkiem do tej strony. Każda grupa dostaje jeden z trzech zestawów albo żaden:
+
+| Zestaw | W pasku | W rozwijanym menu | Wygląd |
+|---|---|---|---|
+| **Basic** | CPU %, pamięć % | stan, użytkownicy online, pobrania / uploady dziś, zadania offline | liczby |
+| **Standard** | CPU %, pamięć % | stan, load, żądania, użytkownicy online, aktywni, pobrania / uploady dziś, zadania, dysk | liczby + paski obciążenia |
+| **Full** | CPU %, pamięć % | wszystkie pozostałe wartości | liczby + małe wykresy |
+
+Zawartość i wygląd każdego zestawu można zmienić (*Default bar* / *Default drop-down* przywracają
+domyślne). Ustawienia zapisane we wcześniejszej kompilacji 1.01 są jednorazowo przekształcane: CPU
+i pamięć trafiają do paska każdego zestawu, w menu zostają pozostałe wartości (wygląd i grupy bez zmian).
+Odświeżanie: 30 s (10–300 s); przy otwartym menu najwyżej co 10 s. Na wąskich ekranach pasek pokazuje
+tylko wartości (poniżej 900 px) albo tylko kolory stanu (poniżej 600 px).
+
+**Wartości:** stan systemu (OK / busy / overloaded – najgorsza z: CPU, pamięć, load, swap, dysk, kolejka
+PHP-FPM), CPU, pamięć, load average, swap, dysk filestore, workery PHP-FPM, żądania na sekundę,
+połączenia www, baza danych, sieć, I/O dysku, przetwarzanie mediów, użytkownicy online (5 min), aktywni
+użytkownicy, zadania offline, pobrania dziś, uploady dziś. Kolory: zielony = OK, pomarańczowy = obciążony,
+czerwony = przeciążony. Progi: CPU 75 / 90 %, pamięć 85 / 95 %, load 1 / 2 na rdzeń, swap 50 / 80 %, dysk
+85 / 95 %, kolejka PHP-FPM 1 / 10, zadania offline 50 / 500 oczekujących albo 1 / 10 nieudanych, działające
+wątki bazy 20 / 50.
+
+**Obciążenie:** wszyscy oglądający dzielą jeden zestaw wartości, liczony najwyżej co 5 sekund
+(`widget.json`), więc kolejni użytkownicy dodają tylko małe żądania, a nie kolejne pomiary. Odświeżanie
+zatrzymuje się, gdy karta przeglądarki jest ukryta, i po *N* minutach bez myszy i klawiatury
+(ustawienie, domyślnie 10; 0 = nigdy). Każde odświeżenie to żądanie do ResourceSpace i liczy się jako
+aktywność użytkownika – tak jak własne sprawdzanie wiadomości ResourceSpace.
+
+Widżety pojawiają się od następnego pełnego załadowania strony po zapisaniu. Nie ma ich na stronie
+logowania, dla użytkownika anonimowego i w udostępnieniach zewnętrznych.
+
 ### Settings
 
 | Ustawienie | Domyślnie | Znaczenie |
@@ -174,10 +228,13 @@ jak pozwolić użytkownikowi serwera WWW je widzieć (grupa `proc`, `gid=proc`).
 ## Dane i prywatność
 
 - Wszystko w `<filestore>/system_monitor/data_<klucz>/` (niedostępne przez URL): `settings.json`,
-  `state.json`, `minute/RRRR-MM-DD.jsonl`, `hour/RRRR-MM.jsonl`, `cache/`.
+  `state.json`, `minute/RRRR-MM-DD.jsonl`, `hour/RRRR-MM.jsonl`, `cache/`,
+  `widget.json` / `widget_state.json` *(od 1.01)*.
 - Wtyczka tylko czyta: `/proc`, `/etc/php/<wersja>/fpm/pool.d/*.conf`, skonfigurowane lokalne strony
   statusu i bazę danych (SELECT / SHOW). Bez `exec()` i poleceń powłoki.
 - Stronę i jej dane (`pages/data.php`) widzą tylko administratorzy.
+- Widżety *(od 1.01)*: `pages/widget.php` zwraca tylko wartości panelu / zestawu zalogowanego
+  użytkownika, innym nic (HTTP 403).
 - **Reset plugin** (wpisz `RESET`) usuwa `<filestore>/system_monitor`. Danych ResourceSpace nie zmienia.
 
 ## Obciążenie
@@ -186,6 +243,8 @@ jak pozwolić użytkownikowi serwera WWW je widzieć (grupa `proc`, `gid=proc`).
   pobiera próbkę: odczyt `/proc` (wszystkie procesy), dwa małe zapytania do bazy i strony statusu.
 - Widok Live czyta te same dane co kilka sekund tylko wtedy, gdy administrator ma otwartą zakładkę.
 - Statystyki ResourceSpace są buforowane.
+- Widżety *(od 1.01)*: jedno żądanie na oglądającego i odświeżenie; pomiar najwyżej co 5 sekund dla
+  wszystkich razem (zob. *Widgets*).
 
 ## Planowane (kolejne wersje)
 
@@ -194,6 +253,7 @@ jak pozwolić użytkownikowi serwera WWW je widzieć (grupa `proc`, `gid=proc`).
 - Znaczniki zdarzeń na wykresach (test obciążenia, aktualizacja ResourceSpace) – ręcznie lub z narzędzia testów obciążenia
 - Eksport CSV / JSON każdego wykresu
 - Kafelek na stronę główną ResourceSpace (CPU, pamięć, aktywni użytkownicy)
+- Widżety: progi kolorów (OK / obciążony / przeciążony) ustawiane na stronie opcji; wybór gotowego ustawienia panelu przez użytkownika
 
 **Etap 3**
 - Czasy żądań (najwolniejsze strony) z logu dostępu nginx lub slow logu PHP-FPM
@@ -206,6 +266,10 @@ jak pozwolić użytkownikowi serwera WWW je widzieć (grupa `proc`, `gid=proc`).
 Wtyczkę napisano na podstawie źródeł ResourceSpace 10.7: tabele `daily_stat`, `resource_log`,
 `activity_log`, `job_queue`, `user.last_active`, hook `initialise`. Sprawdź w ResourceSpace 11
 (F12 / System check), czy zakładka ResourceSpace pokazuje dane.
+Wskaźnik w nagłówku *(od 1.01)*: w ResourceSpace 11 trafia do `#header-container .actions` tuż przed
+`a.UploadButton` (na koniec, gdy nie ma przycisku Upload) i przyjmuje rozmiar i kolory przycisków-ikon
+nagłówka; w ResourceSpace 10 do `#HeaderNav1 > ul` przed `li.UploadButton`. Gdy nie znajdzie żadnego
+z nich, wskaźnika nie ma (komunikat w konsoli przeglądarki) – panel boczny działa dalej.
 
 ## Instalacja
 
